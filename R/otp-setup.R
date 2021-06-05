@@ -172,6 +172,7 @@ otp_build_graph <- function(otp = NULL,
 #' @param flag64bit Logical, if true the -d64 flag is added to Java instructions,
 #'     ignored if otp_version >= 2
 #' @param quiet Logical, if FALSE the Java commands will be printed to console
+#' @param browse Logical, if TRUE will open a browser window to the OTP server instance.
 #' @param otp_version Numeric, version of OTP to build, default NULL when version
 #'     is auto-detected
 #' @family setup
@@ -217,6 +218,7 @@ otp_setup <- function(otp = NULL,
                       wait = TRUE,
                       flag64bit = TRUE,
                       quiet = TRUE,
+                      browse = FALSE,
                       otp_version = NULL) {
 
   # Run Checks
@@ -347,12 +349,15 @@ otp_setup <- function(otp = NULL,
           port,
           " in your browser to view the OTP"
         ))
-        utils::browseURL(paste0(
-          ifelse(otpcon$ssl,
-            "https://", "http://"
-          ),
-          "localhost:", port
-        ))
+        if (browse) {
+          utils::browseURL(paste0(
+            ifelse(otpcon$ssl,
+              "https://", "http://"
+            ),
+            "localhost:", port
+          ))
+        }
+
         break
       } else {
         if (i < 30) {
